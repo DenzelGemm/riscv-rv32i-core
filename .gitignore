@@ -1,0 +1,31 @@
+# Quartus temporary & compilation files
+db/
+incremental_db/
+output_files/
+simulation/
+greybox_tmp/
+hc_output/
+*.rpt
+*.htm
+*.smsg
+*.summary
+*.qws
+*.jdi
+*.pin
+*.sof
+*.pof
+
+# Questa / ModelSim simulation dumps & libraries
+rtl_work/
+work/
+*.vcd
+*.wlf
+*.mpf
+*.ini
+*.do
+*.log
+transcript
+
+# OS junk
+.DS_Store
+Thumbs.db
