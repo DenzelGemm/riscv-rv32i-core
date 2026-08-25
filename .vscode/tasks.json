@@ -1,0 +1,10 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Compile Project",
+			"type": "shell",
+			"command": "quartus_sh --flow compile riskv_rv32i.qpf"
+		}
+	]
+}

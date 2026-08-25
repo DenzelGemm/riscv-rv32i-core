@@ -20,8 +20,6 @@ module alu (
             4'b0111: result = a & b;
             default: result = 32'd0;
         endcase
-
-        zero = (result == 32'd0);
     end
 
     assign zero = (result == 32'd0);
