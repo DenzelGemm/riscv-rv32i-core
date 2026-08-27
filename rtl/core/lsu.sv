@@ -16,6 +16,20 @@ module lsu (
     logic [7:0]  load_byte;
     logic [15:0] load_half;
 
+    typedef enum logic [2:0] {
+        LB  = 3'b000,
+        LH  = 3'b001,
+        LW  = 3'b010,
+        LBU = 3'b100,
+        LHU = 3'b101
+    } load_type_e;
+
+    typedef enum logic [2:0] {
+        SB  = 3'b000,
+        SH  = 3'b001,
+        SW  = 3'b010
+    } store_type_e;
+
     always_comb begin
         mem_addr  = {addr[31:2], 2'b00};
         mem_wdata = 32'b0;
@@ -28,32 +42,29 @@ module lsu (
 
         if (mem_read) begin
             case (funct3)
-                3'b000: rdata = {{24{load_byte[7]}}, load_byte}; 
-                3'b001: rdata = {{16{load_half[15]}}, load_half}; 
-                3'b010: rdata = mem_rdata;
-                3'b100: rdata = {24'b0, load_byte};
-                3'b101: rdata = {16'b0, load_half};
+                LB : rdata = {{24{load_byte[7]}}, load_byte};
+                LH : rdata = {{16{load_half[15]}}, load_half};
+                LW : rdata = mem_rdata;
+                LBU: rdata = {24'b0, load_byte};
+                LHU: rdata = {16'b0, load_half};
                 default: rdata = 32'b0;
             endcase
         end
 
         if (mem_write) begin
             case (funct3)
-                3'b000: begin
+                SB: begin
                     mem_wdata = {4{wdata[7:0]}};
                     mem_wstrb = 4'b0001 << addr[1:0];
                 end
-
-                3'b001: begin
+                SH: begin
                     mem_wdata = {2{wdata[15:0]}};
                     mem_wstrb = 4'b0011 << {addr[1], 1'b0};
                 end
-
-                3'b010: begin
+                SW: begin
                     mem_wdata = wdata;
                     mem_wstrb = 4'b1111;
                 end
-
                 default: begin
                     mem_wdata = 32'b0;
                     mem_wstrb = 4'b0000;
