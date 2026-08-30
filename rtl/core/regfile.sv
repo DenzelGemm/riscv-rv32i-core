@@ -1,6 +1,6 @@
 module regfile(
     input logic clk,
-    input logic rst,
+    input logic rst_n,
     input logic we,
     input logic [4:0] rs1_addr,
     input logic [4:0] rs2_addr,
@@ -12,8 +12,8 @@ module regfile(
 
     logic [31:0] regs[31:0];
 
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst) begin
+    always_ff @(posedge clk or posedge rst_n) begin
+        if (!rst_n) begin
             for (int i = 0; i < 32; i++) begin
                 regs[i] <= 32'd0;
             end
