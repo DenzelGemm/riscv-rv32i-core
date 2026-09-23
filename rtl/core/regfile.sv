@@ -12,7 +12,7 @@ module regfile(
 
     logic [31:0] regs[31:0];
 
-    always_ff @(posedge clk or posedge rst_n) begin
+    always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             for (int i = 0; i < 32; i++) begin
                 regs[i] <= 32'd0;

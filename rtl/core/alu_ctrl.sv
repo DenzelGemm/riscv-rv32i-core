@@ -40,4 +40,4 @@ module alu_ctrl (
         endcase
     end
 
-endmodule
+endmodule   

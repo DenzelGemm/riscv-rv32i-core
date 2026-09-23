@@ -2,6 +2,7 @@ module ctrl_unit (
     input  logic [31:0] instr,
 
     output logic [3:0]  alu_op,
+    output logic [2:0]  imm_src,
     output logic        alu_src_a_sel,
     output logic        alu_src_b_sel,
     output logic        mem_read,
@@ -15,17 +16,25 @@ module ctrl_unit (
 
     typedef enum logic [3:0] {
         ALU_ADD    = 4'b0000,
-        ALU_SUB    = 4'b0001,
-        ALU_SLL    = 4'b0010,
-        ALU_SLT    = 4'b0011,
-        ALU_SLTU   = 4'b0100,
-        ALU_XOR    = 4'b0101,
-        ALU_SRL    = 4'b0110,
-        ALU_SRA    = 4'b0111,
-        ALU_OR     = 4'b1000,
-        ALU_AND    = 4'b1001,
-        ALU_PASS_B = 4'b1010
+        ALU_SUB    = 4'b1000,
+        ALU_SLL    = 4'b0001,
+        ALU_SLT    = 4'b0010,
+        ALU_SLTU   = 4'b0011,
+        ALU_XOR    = 4'b0100,
+        ALU_SRL    = 4'b0101,
+        ALU_SRA    = 4'b1100,
+        ALU_OR     = 4'b0110,
+        ALU_AND    = 4'b0111,
+        ALU_PASS_B = 4'b1111
     } alu_op_e;
+
+    typedef enum logic [2:0] {
+        IMM_I = 3'b000,
+        IMM_S = 3'b001,
+        IMM_B = 3'b010,
+        IMM_U = 3'b011,
+        IMM_J = 3'b100
+    } imm_src_e;
 
     typedef enum logic [1:0] {
         WB_ALU = 2'b00,
@@ -53,8 +62,8 @@ module ctrl_unit (
     assign funct7_5 = instr[30];
 
     always_comb begin
-
         alu_op            = ALU_ADD;
+        imm_src           = IMM_I;
         alu_src_a_sel     = 1'b0;
         alu_src_b_sel     = 1'b0;
         mem_read          = 1'b0;
@@ -66,9 +75,7 @@ module ctrl_unit (
 
         unique case (opcode)
             OP_R_TYPE: begin
-                reg_write     = 1'b1;
-                alu_src_a_sel = 1'b0;
-                alu_src_b_sel = 1'b0;
+                reg_write = 1'b1;
                 unique case (funct3)
                     3'b000:  alu_op = funct7_5 ? ALU_SUB : ALU_ADD;
                     3'b001:  alu_op = ALU_SLL;
@@ -83,6 +90,7 @@ module ctrl_unit (
             end
 
             OP_I_ALU: begin
+                imm_src       = IMM_I;
                 reg_write     = 1'b1;
                 alu_src_b_sel = 1'b1;
                 unique case (funct3)
@@ -99,6 +107,7 @@ module ctrl_unit (
             end
 
             OP_LOAD: begin
+                imm_src           = IMM_I;
                 alu_src_b_sel     = 1'b1;
                 alu_op            = ALU_ADD;
                 mem_read          = 1'b1;
@@ -107,23 +116,27 @@ module ctrl_unit (
             end
 
             OP_STORE: begin
+                imm_src       = IMM_S;
                 alu_src_b_sel = 1'b1;
                 alu_op        = ALU_ADD;
                 mem_write     = 1'b1;
             end
 
             OP_BRANCH: begin
-                branch = 1'b1;
-                alu_op = ALU_SUB;
+                imm_src = IMM_B;
+                branch  = 1'b1;
+                alu_op  = ALU_SUB;
             end
 
             OP_JAL: begin
+                imm_src           = IMM_J;
                 jump              = 1'b1;
                 reg_write         = 1'b1;
                 reg_write_src_sel = WB_PC4;
             end
 
             OP_JALR: begin
+                imm_src           = IMM_I;
                 jump              = 1'b1;
                 reg_write         = 1'b1;
                 reg_write_src_sel = WB_PC4;
@@ -132,12 +145,14 @@ module ctrl_unit (
             end
 
             OP_LUI: begin
+                imm_src       = IMM_U;
                 reg_write     = 1'b1;
                 alu_src_b_sel = 1'b1;
                 alu_op        = ALU_PASS_B;
             end
 
             OP_AUIPC: begin
+                imm_src       = IMM_U;
                 reg_write     = 1'b1;
                 alu_src_a_sel = 1'b1;
                 alu_src_b_sel = 1'b1;

@@ -4,14 +4,14 @@ module tb_alu;
 
     logic clk;
     logic [31:0] a, b;
-    logic [3:0]  op;
+    logic [3:0]  alu_ctrl;
     logic [31:0] result;
     logic        zero;
 
     alu dut (
         .a(a),
         .b(b),
-        .op(op),
+        .alu_ctrl(alu_ctrl),
         .result(result),
         .zero(zero)
     );
@@ -24,7 +24,7 @@ module tb_alu;
     task automatic apply_op(input logic [31:0] va, vb, input logic [3:0] vop);
         a = va;
         b = vb;
-        op = vop;
+        alu_ctrl = vop;
         @(posedge clk);
     endtask
 
@@ -34,14 +34,14 @@ module tb_alu;
         #1;
         assert (result == exp_result && zero == exp_zero)
             else begin 
-                $error("FAIL: a=%0d b=%0d op=%0h got=%0d/%b expected=%0d/%b",
+                $error("FAIL: a=%0d b=%0d alu_ctrl=%0h got=%0d/%b expected=%0d/%b",
                         va, vb, vop, result, zero, exp_result, exp_zero);
                 errors++;
             end
     endtask
 
     initial begin
-        a = 0; b = 0; op = 0;
+        a = 0; b = 0; alu_ctrl = 0;
 
         // ADD
         check_op(32'd10, 32'd5, 4'b0000, 32'd15, 1'b0);
