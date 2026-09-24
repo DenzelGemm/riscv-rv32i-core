@@ -34,7 +34,7 @@ module tb_alu;
         #1;
         assert (result == exp_result && zero == exp_zero)
             else begin 
-                $error("FAIL: a=%0d b=%0d alu_ctrl=%0h got=%0d/%b expected=%0d/%b",
+                $error("FAIL: a=%0d b=%0d alu_op=%0h got=%0d/%b expected=%0d/%b",
                         va, vb, vop, result, zero, exp_result, exp_zero);
                 errors++;
             end

@@ -54,7 +54,9 @@ module ctrl_unit (
         OP_JAL    = 7'b1101111,
         OP_JALR   = 7'b1100111,
         OP_LUI    = 7'b0110111,
-        OP_AUIPC  = 7'b0010111
+        OP_AUIPC  = 7'b0010111,
+        OP_MISC_MEM = 7'b0001111,
+        OP_SYSTEM = 7'b1110011
     } opcode_e;
 
     logic [6:0] opcode;
@@ -169,12 +171,12 @@ module ctrl_unit (
                 alu_op        = ALU_ADD;
             end
 
-            7'b0001111: begin
+            OP_MISC_MEM: begin
                 if (funct3 == 3'b000)
                     fence = 1'b1;
             end
 
-            7'b1110011: begin
+            OP_SYSTEM: begin
                 system = 1'b1;
             end
 

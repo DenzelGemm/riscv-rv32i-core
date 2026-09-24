@@ -2,7 +2,7 @@
     rv32i_core.sv (або riscv_core.sv) — Top-level модуль ядра, що об'єднує всі блоки.
     regfile.sv (або register_file.sv) — 32-розрядний регістровий файл ($32 \times 32$ біт з фіксованим нулем у x0, 2 порти читання, 1 порт запису)
     alu.sv — Арифметико-логічний пристрій (ADD, SUB, SLT, SLTU, XOR, OR, AND, SLL, SRL, SRA)
-    imm_gen.sv (або imm_decoder.sv) — Генератор констант (знакове розширення для форматів I, S, B, U, J)
+    imm_gen.sv (або imm_decoder.sv) — Генератор констант (знакове розширення для форматів I, S, B, U, J), вхід вибору формату називається imm_src
     branch_comp.sv (або branch_unit.sv) — Блок перевірки умов розгалуження (BEQ, BNE, BLT, BGE, BLTU, BGEU)
     lsu.sv (Load-Store Unit або byte_mask_gen.sv) — Логіка маскування та вирівнювання байтів/напівслів (LB, LH, LW, LBU, LHU, SB, SH, SW)
     pc_reg.sv — Регістр лічильника команд (Program Counter).Блоки керування (Control)

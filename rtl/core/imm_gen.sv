@@ -1,6 +1,6 @@
 module imm_gen (
     input  logic [31:0] instr,
-    input  logic [2:0]  imm_sel,
+    input  logic [2:0]  imm_src,
     output logic [31:0] imm
 );
 
@@ -13,7 +13,7 @@ module imm_gen (
     } imm_type_e;
 
     always_comb begin
-        case (imm_sel)
+        case (imm_src)
             I_TYPE: imm = {{20{instr[31]}}, instr[31:20]};
             S_TYPE: imm = {{20{instr[31]}}, instr[31:25], instr[11:7]};
             B_TYPE: imm = {{19{instr[31]}}, instr[31], instr[7], instr[30:25], instr[11:8], 1'b0};
