@@ -58,7 +58,7 @@ module lsu (
                     mem_wstrb = 4'b0001 << addr[1:0];
                 end
                 SH: begin
-                    mem_wdata = {2{wdata[15:0]}};
+                    mem_wdata = {2{wdata[15:0]}} << (addr[1:0] * 8);
                     mem_wstrb = 4'b0011 << {addr[1], 1'b0};
                 end
                 SW: begin
