@@ -11,6 +11,9 @@ module ctrl_unit (
     output logic [1:0]  reg_write_src_sel,
     output logic        branch,
     output logic        jump,
+    output logic        jalr,
+    output logic        fence,
+    output logic        system,
     output logic [2:0]  funct3
 );
 
@@ -72,6 +75,9 @@ module ctrl_unit (
         reg_write_src_sel = WB_ALU;
         branch            = 1'b0;
         jump              = 1'b0;
+        jalr              = 1'b0;
+        fence             = 1'b0;
+        system            = 1'b0;
 
         unique case (opcode)
             OP_R_TYPE: begin
@@ -130,6 +136,9 @@ module ctrl_unit (
 
             OP_JAL: begin
                 imm_src           = IMM_J;
+                alu_src_a_sel     = 1'b1;
+                alu_src_b_sel     = 1'b1;
+                alu_op            = ALU_ADD;
                 jump              = 1'b1;
                 reg_write         = 1'b1;
                 reg_write_src_sel = WB_PC4;
@@ -138,6 +147,7 @@ module ctrl_unit (
             OP_JALR: begin
                 imm_src           = IMM_I;
                 jump              = 1'b1;
+                jalr              = 1'b1;
                 reg_write         = 1'b1;
                 reg_write_src_sel = WB_PC4;
                 alu_src_b_sel     = 1'b1;
@@ -157,6 +167,15 @@ module ctrl_unit (
                 alu_src_a_sel = 1'b1;
                 alu_src_b_sel = 1'b1;
                 alu_op        = ALU_ADD;
+            end
+
+            7'b0001111: begin
+                if (funct3 == 3'b000)
+                    fence = 1'b1;
+            end
+
+            7'b1110011: begin
+                system = 1'b1;
             end
 
             default: ;
