@@ -1,7 +1,7 @@
 module alu (
     input  logic [31:0] a,
     input  logic [31:0] b,
-    input  logic [3:0]  alu_ctrl,
+    input  logic [3:0]  alu_op,
     output logic [31:0] result,
     output logic        zero
 );
@@ -21,7 +21,7 @@ module alu (
     } alu_op_t;
 
     always_comb begin
-        case (alu_ctrl)
+        case (alu_op)
             ALU_ADD   : result = a + b;
             ALU_SUB   : result = a - b;
             ALU_SLL   : result = a << b[4:0];
