@@ -106,7 +106,7 @@ module tb_lsu;
         check_store(32'd1, 32'h000000A5, 3'b000, 32'd0, 32'hA5A5A5A5, 4'b0010);
 
         // SH
-        check_store(32'd2, 32'h0000BEEF, 3'b001, 32'd0, 32'hBEEFBEEF, 4'b1100);
+        check_store(32'd2, 32'h0000BEEF, 3'b001, 32'd0, 32'hBEEF0000, 4'b1100);
 
         // SW
         check_store(32'd0, 32'hCAFEBABE, 3'b010, 32'd0, 32'hCAFEBABE, 4'b1111);

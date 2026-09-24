@@ -59,7 +59,7 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/pc_reg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/lsu.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/imm_gen.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/branch_comp.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/alu_ctrl.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/ctrl_unit.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/alu.sv
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"

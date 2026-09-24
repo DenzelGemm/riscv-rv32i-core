@@ -7,7 +7,7 @@
     lsu.sv (Load-Store Unit або byte_mask_gen.sv) — Логіка маскування та вирівнювання байтів/напівслів (LB, LH, LW, LBU, LHU, SB, SH, SW)
     pc_reg.sv — Регістр лічильника команд (Program Counter).Блоки керування (Control)
     ctrl_unit.sv (або control_unit.sv) — Головний блок керування (декодує opcode та формує сигнали запису в регістри, вибору джерела ALU, читання пам'яті тощо)
-    alu_ctrl.sv (або alu_decoder.sv) — Декодер операцій ALU (визначає конкретну операцію ALU на основі funct3, funct7 та типу команди)
+    ctrl_unit.sv — Декодер операцій ALU та керувальних сигналів. Вихід alu_op є єдиним 4-бітним кодом операції, який напряму підключається до ALU.
 
 Специфічні підмодулі для 5-Stage 
     pipelinepipe_reg_if_id.sv, pipe_reg_id_ex.sv, pipe_reg_ex_mem.sv, pipe_reg_mem_wb.sv — Міжстадійні конвеєрні регістри

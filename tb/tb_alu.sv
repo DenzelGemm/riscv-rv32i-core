@@ -4,14 +4,14 @@ module tb_alu;
 
     logic clk;
     logic [31:0] a, b;
-    logic [3:0]  alu_ctrl;
+    logic [3:0]  alu_op;
     logic [31:0] result;
     logic        zero;
 
     alu dut (
         .a(a),
         .b(b),
-        .alu_ctrl(alu_ctrl),
+        .alu_op(alu_op),
         .result(result),
         .zero(zero)
     );
@@ -24,7 +24,7 @@ module tb_alu;
     task automatic apply_op(input logic [31:0] va, vb, input logic [3:0] vop);
         a = va;
         b = vb;
-        alu_ctrl = vop;
+        alu_op = vop;
         @(posedge clk);
     endtask
 
@@ -41,7 +41,7 @@ module tb_alu;
     endtask
 
     initial begin
-        a = 0; b = 0; alu_ctrl = 0;
+        a = 0; b = 0; alu_op = 0;
 
         // ADD
         check_op(32'd10, 32'd5, 4'b0000, 32'd15, 1'b0);
