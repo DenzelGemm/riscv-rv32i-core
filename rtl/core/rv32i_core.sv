@@ -43,7 +43,6 @@ module rv32i_core (
     logic [31:0] alu_b;
 
     logic [31:0] alu_result;
-    logic alu_zero; //zero flag is unused in this design, so better to remove it to avoid lint warnings, in alu.sv to
 
     logic br_taken;
     logic take_branch;
@@ -98,12 +97,11 @@ module rv32i_core (
         .rs2_data (rs2_data)
     );
 
-    alu u_alu (//zero flag better to remove from alu.sv
+    alu u_alu (
         .a      (alu_a),
         .b      (alu_b),
         .alu_op (alu_op),
-        .result (alu_result),
-        .zero   (alu_zero)
+        .result (alu_result)
     );
 
     branch_comp u_branch_comp (
