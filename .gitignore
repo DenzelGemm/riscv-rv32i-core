@@ -26,6 +26,12 @@ work/
 *.log
 transcript
 
+# Editor backups and generated logs
+*.bak
+*.bkp
+*.jou
+*.vstf
+
 # OS junk
 .DS_Store
 Thumbs.db
