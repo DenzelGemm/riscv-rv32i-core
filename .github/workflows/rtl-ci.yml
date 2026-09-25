@@ -1,0 +1,60 @@
+name: RV32I RTL CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rtl-sim:
+    name: Compile and run RTL tests
+    runs-on: self-hosted
+    timeout-minutes: 30
+
+    defaults:
+      run:
+        shell: powershell
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Locate Questa/ModelSim tools
+        shell: powershell
+        run: |
+          $toolRoots = @(
+            'C:\intelFPGA_lite\*\questa_fse\win64',
+            'C:\IntelFPGA\*\questa_fse\win64',
+            'C:\Quartus\*\questa_fse\win64'
+          )
+
+          $found = $false
+          foreach ($pattern in $toolRoots) {
+            $matches = Get-ChildItem -Path $pattern -ErrorAction SilentlyContinue
+            if ($matches) {
+              $toolPath = $matches[0].FullName
+              $env:PATH += ";$toolPath"
+              $found = $true
+              break
+            }
+          }
+
+          if (-not $found) {
+            Write-Error "Questa/ModelSim tools were not found on this self-hosted runner. Install Intel FPGA/Questa and add its 'win64' path to PATH."
+            exit 1
+          }
+
+          Get-Command vlog | Format-List *
+          Get-Command vsim | Format-List *
+
+      - name: Compile RTL
+        run: make compile
+
+      - name: Run unit tests
+        run: make test
+
+      - name: Run top-level integration test
+        run: make test-top
