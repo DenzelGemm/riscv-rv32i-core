@@ -10,7 +10,13 @@ module data_mem (
     output logic [31:0] rdata
 );
 
-    logic [31:0] mem [0:1023] = '{default: 32'd0};
+    logic [31:0] mem [0:1023];
+    integer init_index;
+
+    initial begin
+        for (init_index = 0; init_index < 1024; init_index = init_index + 1)
+            mem[init_index] = 32'd0;
+    end
 
     always_comb begin
         if (read)
@@ -19,7 +25,7 @@ module data_mem (
             rdata = 32'd0;
     end
 
-    always_ff @(posedge clk) begin
+    always @(posedge clk) begin
         if (write) begin
             if (wstrb[0])
                 mem[addr[11:2]][7:0] <= wdata[7:0];
