@@ -1,5 +1,5 @@
-module rv32i_top #(
-    parameter string IMEM_INIT_FILE = "tb/program.hex"
+module rv32i_single_top #(
+    parameter IMEM_INIT_FILE = "../tb/program.hex"
 ) (
     input logic clk,
     input logic rst_n

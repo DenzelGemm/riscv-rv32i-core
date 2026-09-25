@@ -1,12 +1,12 @@
 `timescale 1ns/1ps
 
-module tb_rv32i_top;
+module tb_rv32i_single_top;
 
     logic clk;
     logic rst_n;
 
-    rv32i_top #(
-        .IMEM_INIT_FILE("tb/program.hex")
+    rv32i_single_top #(
+        .IMEM_INIT_FILE("../../../tb/program.hex")
     ) dut (
         .clk  (clk),
         .rst_n(rst_n)

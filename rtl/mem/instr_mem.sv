@@ -1,5 +1,5 @@
 module instr_mem #(
-    parameter string INIT_FILE = ""
+    parameter INIT_FILE = ""
 ) (
     input  logic [31:0] addr,
     output logic [31:0] rdata
