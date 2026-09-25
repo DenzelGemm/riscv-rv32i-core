@@ -11,50 +11,44 @@ on:
 jobs:
   rtl-sim:
     name: Compile and run RTL tests
-    runs-on: self-hosted
-    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     defaults:
       run:
-        shell: powershell
+        shell: bash
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Locate Questa/ModelSim tools
-        shell: powershell
+      - name: Install open-source simulator
         run: |
-          $toolRoots = @(
-            'C:\intelFPGA_lite\*\questa_fse\win64',
-            'C:\IntelFPGA\*\questa_fse\win64',
-            'C:\Quartus\*\questa_fse\win64'
-          )
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y iverilog
 
-          $found = $false
-          foreach ($pattern in $toolRoots) {
-            $matches = Get-ChildItem -Path $pattern -ErrorAction SilentlyContinue
-            if ($matches) {
-              $toolPath = $matches[0].FullName
-              $env:PATH += ";$toolPath"
-              $found = $true
-              break
-            }
-          }
+      - name: Compile and run unit tests
+        run: |
+          mkdir -p build
 
-          if (-not $found) {
-            Write-Error "Questa/ModelSim tools were not found on this self-hosted runner. Install Intel FPGA/Questa and add its 'win64' path to PATH."
-            exit 1
-          }
+          iverilog -g2012 -s tb_alu -o build/tb_alu.vvp \
+            rtl/core/*.sv rtl/mem/*.sv rtl/top/*.sv tb/tb_alu.sv
+          timeout 2m vvp build/tb_alu.vvp
 
-          Get-Command vlog | Format-List *
-          Get-Command vsim | Format-List *
+          iverilog -g2012 -s tb_lsu -o build/tb_lsu.vvp \
+            rtl/core/*.sv rtl/mem/*.sv rtl/top/*.sv tb/tb_lsu.sv
+          timeout 2m vvp build/tb_lsu.vvp
 
-      - name: Compile RTL
-        run: make compile
+          iverilog -g2012 -s tb_regfile -o build/tb_regfile.vvp \
+            rtl/core/*.sv rtl/mem/*.sv rtl/top/*.sv tb/tb_regfile.sv
+          timeout 2m vvp build/tb_regfile.vvp
 
-      - name: Run unit tests
-        run: make test
-
-      - name: Run top-level integration test
-        run: make test-top
+      - name: Compile and run top-level integration test
+        run: |
+          mkdir -p build
+          cd quartus/simulation/questa
+          iverilog -g2012 -s tb_rv32i_single_top \
+            -o ../../../build/tb_rv32i_single_top.vvp \
+            ../../../rtl/core/*.sv ../../../rtl/mem/*.sv \
+            ../../../rtl/top/*.sv ../../../tb/tb_rv32i_single_top.sv
+          timeout 2m vvp ../../../build/tb_rv32i_single_top.vvp
