@@ -45,7 +45,7 @@ jobs:
 
       - name: Compile and run top-level integration test
         run: |
-          mkdir -p build
+          mkdir -p build quartus/simulation/questa
           cd quartus/simulation/questa
           iverilog -g2012 -s tb_rv32i_single_top \
             -o ../../../build/tb_rv32i_single_top.vvp \
