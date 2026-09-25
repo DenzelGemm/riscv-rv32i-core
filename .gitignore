@@ -29,6 +29,9 @@ transcript
 # Editor backups and generated logs
 *.bak
 *.bkp
+*.drawio
+*.drawio.bkp
+docs.txt
 *.jou
 *.vstf
 
