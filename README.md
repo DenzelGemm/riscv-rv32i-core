@@ -1,5 +1,7 @@
 # RV32I Single-Cycle Core
 
+[![RTL CI](https://github.com/DenzelGemm/riscv-rv32i-core/actions/workflows/rtl-ci.yml/badge.svg)](https://github.com/DenzelGemm/riscv-rv32i-core/actions/workflows/rtl-ci.yml)
+
 A compact SystemVerilog implementation of an RV32I single-cycle processor. The project is intended for RTL simulation with Questa/ModelSim, synthesis with Intel Quartus, and automated regression testing with GitHub Actions.
 
 ## Block diagram
