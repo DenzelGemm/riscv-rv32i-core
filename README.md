@@ -6,7 +6,9 @@ A compact SystemVerilog implementation of an RV32I single-cycle processor. The p
 
 ## Block diagram
 
-![RV32I single-cycle datapath](rv32i.svg)
+[![RV32I Block Diagram](rv32i.svg)](https://raw.githubusercontent.com/DenzelGemm/riscv-rv32i-core/main/rv32i.svg)
+
+Click the diagram to open the full-resolution SVG in a separate browser view.
 
 The diagram is an exported SVG of the current design. It shows the important datapath and control connections, including their directions. The source Draw.io file is kept locally and is not part of the Git repository.
 
