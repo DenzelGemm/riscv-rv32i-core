@@ -127,8 +127,6 @@ rv32i.svg              Exported block diagram
 Makefile               Local Questa/ModelSim commands
 ```
 
-Generated Quartus and simulator files such as `db/`, `simulation/`, `work/`, `*.wlf`, and `transcript` are ignored. The editable Draw.io source, its backup, and the legacy `docs.txt` remain local-only files and are also ignored.
-
 ## Simulation
 
 The Makefile uses Questa/ModelSim locally:
